@@ -1,0 +1,545 @@
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Debsirin 'Fix It' - Admin Dashboard</title>
+      <script src="https://cdn.tailwindcss.com"></script>
+
+      <link rel="stylesheet" href="css/dashboard.css" />
+      <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+      />
+
+      <style>
+        ::-webkit-scrollbar {
+          width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+          background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+          background: #888;
+          border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+          background: #555;
+        }
+        .status-submitted {
+          background-color: #3b82f6;
+          color: white;
+        }
+        .status-in-progress {
+          background-color: #f97316;
+          color: white;
+        }
+        .status-completed {
+          background-color: #22c55e;
+          color: white;
+        }
+        .custom-sidebar-bg {
+          background-color: #006837;
+        }
+        .custom-list-bg:hover {
+          background-color: #012e1a;
+        }
+        .active {
+          background-color: #012e1a;
+          border-radius: 0.5rem;
+        }
+        /* Style for the filter dropdown */
+        .status-filter {
+          padding: 0.5rem 2rem 0.5rem 1rem; /* Increased right padding for arrow space */
+          border-radius: 0.5rem;
+          border-color: #d1d5db;
+          font-size: 0.875rem;
+          appearance: none; /* Removes default browser arrow */
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+          background-repeat: no-repeat;
+          background-position: right 0.75rem center; /* Adjusted position for better spacing */
+          background-size: 1.5em;
+          width: 100%; /* Ensure full width for consistency */
+          max-width: 12rem; /* Optional: Limit width to prevent stretching */
+          box-sizing: border-box; /* Ensure padding doesn't affect width */
+        }
+        .status-filter option {
+          padding: 0.5rem;
+          background-color: white;
+        }
+        /* Custom style for selected option (limited by browser support) */
+      </style>
+    </head>
+    <body class="flex h-screen">
+      <!-- Sidebar Navigation -->
+      <aside
+        class="w-64 custom-sidebar-bg text-white flex-shrink-0 flex flex-col"
+      >
+        <div
+          class="h-16 flex items-center justify-center text-2xl font-bold border-b border-gray-700"
+        >
+          Swift Admin
+        </div>
+        <nav class="flex-grow px-4 py-6">
+          <ul>
+            <li class="mb-2 active">
+              <a
+                href="#"
+                class="flex items-center p-3 rounded-lg custom-list-bg text-white"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-6 w-6 mr-3"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4 6h16M4 12h16m-7 6h7"
+                  />
+                </svg>
+                Dashboard
+              </a>
+            </li>
+            <li class="mb-2">
+              <a href="#" class="flex items-center p-3 rounded-lg custom-list-bg">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-6 w-6 mr-3"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M15 21a6 6 0 00-9-5.197M15 11a4 4 0 11-8 0 4 4 0 018 0z"
+                  />
+                </svg>
+                Manage Users
+              </a>
+            </li>
+            <li class="mb-2">
+              <a href="#" class="flex items-center p-3 rounded-lg custom-list-bg">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-6 w-6 mr-3"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.608 3.292 0z"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                </svg>
+                Settings
+              </a>
+            </li>
+          </ul>
+        </nav>
+        <div class="p-4 border-t border-gray-700">
+          <a href="#" class="flex items-center p-3 rounded-lg custom-list-bg">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6 mr-3"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+              />
+            </svg>
+            Logout
+          </a>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="flex-1 flex flex-col overflow-hidden">
+        <!-- Header -->
+        <header class="bg-white border-b border-gray-200 flex-shrink-0">
+          <div class="flex items-center justify-between p-4">
+            <h1 class="text-2xl font-semibold text-gray-800">Admin Dashboard</h1>
+            <div class="flex items-center space-x-4">
+              <p class="text-sm text-gray-500 hidden sm:block">
+                Saturday, 28 July 2025, 02:26 AM +07
+              </p>
+              <div class="relative">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-5 w-5 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  />
+                </svg>
+                <input
+                  type="text"
+                  id="searchInput"
+                  placeholder="Search reports..."
+                  class="w-full sm:w-64 pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <!-- Content Body -->
+        <div class="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8">
+          <!-- Stat Cards -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div
+              class="bg-white p-6 rounded-xl shadow-md flex items-center justify-between"
+            >
+              <div>
+                <p class="text-sm font-medium text-gray-500">New Reports</p>
+                <p class="text-3xl font-bold text-gray-800">3</p>
+              </div>
+              <div class="bg-blue-100 p-3 rounded-full">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-6 w-6 text-blue-500"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                  />
+                </svg>
+              </div>
+            </div>
+            <div
+              class="bg-white p-6 rounded-xl shadow-md flex items-center justify-between"
+            >
+              <div>
+                <p class="text-sm font-medium text-gray-500">In Progress</p>
+                <p class="text-3xl font-bold text-gray-800">1</p>
+              </div>
+              <div class="bg-orange-100 p-3 rounded-full">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-6 w-6 text-orange-500"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+              </div>
+            </div>
+            <div
+              class="bg-white p-6 rounded-xl shadow-md flex items-center justify-between"
+            >
+              <div>
+                <p class="text-sm font-medium text-gray-500">Completed (Month)</p>
+                <p class="text-3xl font-bold text-gray-800">1</p>
+              </div>
+              <div class="bg-green-100 p-3 rounded-full">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-6 w-6 text-green-500"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+              </div>
+            </div>
+            <div
+              class="bg-white p-6 rounded-xl shadow-md flex items-center justify-between"
+            >
+              <div>
+                <p class="text-sm font-medium text-gray-500">Total Pending</p>
+                <p class="text-3xl font-bold text-gray-800">2</p>
+              </div>
+              <div class="bg-red-100 p-3 rounded-full">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-6 w-6 text-red-500"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                  />
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Reports Table -->
+          <div class="bg-white rounded-xl shadow-md overflow-hidden">
+            <div
+              class="p-4 border-b flex flex-col sm:flex-row items-center justify-between gap-4"
+            >
+              <h2 class="text-xl font-semibold text-gray-700">
+                All Maintenance Reports
+              </h2>
+              <div class="flex items-center gap-2">
+                <select
+                  class="status-filter"
+                  onchange="filterByStatus(this.value)"
+                >
+                  <option value="">Filter by Status</option>
+                  <option value="submitted">Submitted</option>
+                  <option value="in-progress">In Progress</option>
+                  <option value="completed">Completed</option>
+                </select>
+                <select class="status-filter">
+                  <option>Filter by Building</option>
+                  <option>Main Building</option>
+                  <option>Science Wing</option>
+                  <option>Gymnasium</option>
+                </select>
+              </div>
+            </div>
+            <div class="overflow-x-auto">
+              <table
+                class="w-full text-sm text-left text-gray-500"
+                id="reportsTable"
+              >
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                  <tr>
+                    <th scope="col" class="px-6 py-3">Status</th>
+                    <th scope="col" class="px-6 py-3">Item</th>
+                    <th scope="col" class="px-6 py-3">Location</th>
+                    <th scope="col" class="px-6 py-3">Reported By</th>
+                    <th scope="col" class="px-6 py-3">Submitted Date</th>
+                    <th scope="col" class="px-6 py-3">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="bg-white border-b hover:bg-gray-50">
+                    <td class="px-6 py-4">
+                      <span
+                        class="px-3 py-1 text-xs font-medium rounded-full status-in-progress"
+                        >In Progress</span
+                      >
+                    </td>
+                    <td class="px-6 py-4 font-medium text-gray-900">แอร์เสีย</td>
+                    <td class="px-6 py-4">567</td>
+                    <td class="px-6 py-4">Xrud</td>
+                    <td class="px-6 py-4">2025-07-27</td>
+                    <td class="px-6 py-4">
+                      <button
+                        onclick="openModal()"
+                        class="font-medium text-blue-600 hover:underline"
+                      >
+                        View Details
+                      </button>
+                    </td>
+                  </tr>
+                  <tr class="bg-white border-b hover:bg-gray-50">
+                    <td class="px-6 py-4">
+                      <span
+                        class="px-3 py-1 text-xs font-medium rounded-full status-completed"
+                        >Completed</span
+                      >
+                    </td>
+                    <td class="px-6 py-4 font-medium text-gray-900">
+                      ประตูพัง
+                    </td>
+                    <td class="px-6 py-4">321</td>
+                    <td class="px-6 py-4">Rontha</td>
+                    <td class="px-6 py-4">2025-07-23</td>
+                    <td class="px-6 py-4">
+                      <button
+                        onclick="openModal()"
+                        class="font-medium text-blue-600 hover:underline"
+                      >
+                        View Details
+                      </button>
+                    </td>
+                  </tr>
+                  <tr class="bg-white border-b hover:bg-gray-50">
+                    <td class="px-6 py-4">
+                      <span
+                        class="px-3 py-1 text-xs font-medium rounded-full status-submitted"
+                        >Submitted</span
+                      >
+                    </td>
+                    <td class="px-6 py-4 font-medium text-gray-900">
+                      ขาเก้าอี้หัก
+                    </td>
+                    <td class="px-6 py-4">321</td>
+                    <td class="px-6 py-4">Jarukit</td>
+                    <td class="px-6 py-4">2025-07-22</td>
+                    <td class="px-6 py-4">
+                      <button
+                        onclick="openModal()"
+                        class="font-medium text-blue-600 hover:underline"
+                      >
+                        View Details
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- Pagination -->
+            <div class="p-4 flex items-center justify-between">
+              <span class="text-sm text-gray-700">
+                Showing <span class="font-semibold">1</span> to
+                <span class="font-semibold">3</span> of
+                <span class="font-semibold">3</span> Reports
+              </span>
+              <div class="inline-flex items-center -space-x-px">
+                <a
+                  href="#"
+                  class="px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700"
+                  >Previous</a
+                >
+                <a
+                  href="#"
+                  class="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700"
+                  >Next</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- Modal for Report Details -->
+      <div
+        id="reportModal"
+        class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center"
+      >
+        <div
+          class="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col m-4"
+        >
+          <div class="flex justify-between items-center p-4 border-b">
+            <h3 class="text-xl font-semibold">Report Details</h3>
+            <button
+              onclick="closeModal()"
+              class="text-gray-400 hover:text-gray-600"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
+          <div
+            class="flex-grow p-6 overflow-y-auto grid grid-cols-1 md:grid-cols-2 gap-6"
+          >
+            <div>
+              <div
+                class="w-full aspect-video bg-gray-200 rounded-lg mb-4 flex items-center justify-center"
+              >
+                <img
+                  src="https://placehold.co/600x400/e2e8f0/64748b?text=Projector+Damage"
+                  alt="Damage photo"
+                  class="w-full h-full object-cover rounded-lg"
+                />
+              </div>
+              <h4 class="font-semibold text-gray-800 mb-2">Submitted By</h4>
+              <p class="text-gray-600">Rontha</p>
+              <p class="text-sm text-gray-500">sxxxxx@debsirin.ac.th</p>
+              <p class="text-sm text-gray-500 mt-1">
+                Submitted on: July 23, 2025, 10:32 AM
+              </p>
+            </div>
+            <div>
+              <div class="mb-4">
+                <h4 class="font-semibold text-gray-800 mb-1">Location</h4>
+                <p class="text-gray-600">321</p>
+              </div>
+              <div class="mb-4">
+                <h4 class="font-semibold text-gray-800 mb-1">Item</h4>
+                <p class="text-gray-600">ประตู</p>
+              </div>
+              <div class="mb-4">
+                <h4 class="font-semibold text-gray-800 mb-1">
+                  Problem Description
+                </h4>
+                <p class="text-gray-600 bg-gray-50 p-3 rounded-lg">
+                  ประตูพัง
+                </p>
+              </div>
+              <div class="mb-6">
+                <label
+                  for="status-update"
+                  class="font-semibold text-gray-800 mb-2 block"
+                  >Update Status</label
+                >
+                <select
+                  id="status-update"
+                  class="w-full p-2 rounded-lg border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="submitted" selected>Submitted</option>
+                  <option value="in-progress">In Progress</option>
+                  <option value="completed">Completed</option>
+                </select>
+              </div>
+              <div class="flex flex-col sm:flex-row gap-3">
+                <button
+                  class="w-full sm:w-auto flex-grow px-4 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+                >
+                  Update Status
+                </button>
+                <button
+                  class="w-full sm:w-auto px-4 py-3 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors"
+                >
+                  Delete Report
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script src="js/admin-page.js"></script>
+    </body>
+  </html>

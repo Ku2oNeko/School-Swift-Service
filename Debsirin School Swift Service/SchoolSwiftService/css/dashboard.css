@@ -1,0 +1,33 @@
+@import url("https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap");
+
+body {
+  font-family: "Sarabun", sans-serif;
+  /* A slightly off-white background */
+  background-color: rgb(242, 255, 236);
+}
+/* Custom scrollbar for better aesthetics */
+
+.status-submitted {
+  background-color: #3b82f6;
+  color: white;
+}
+.status-in-progress {
+  background-color: #f97316;
+  color: white;
+}
+.status-completed {
+  background-color: #22c55e;
+  color: white;
+}
+
+/*side-bar bg color*/
+.custom-sidebar-bg {
+  background-color: #006837;
+}
+.custom-list-bg:hover {
+  background-color: #012e1a;
+}
+.active {
+  background-color: #012e1a;
+  border-radius: 0.5rem;
+}
